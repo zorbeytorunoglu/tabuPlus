@@ -1,22 +1,25 @@
-package com.zorbeytorunoglu.tabuuplus.data.remote
+package com.zorbeytorunoglu.tabuuplus.data
 
 import android.util.Log
+import com.zorbeytorunoglu.tabuuplus.data.dto.ParsedCardsJson
 import com.zorbeytorunoglu.tabuuplus.domain.model.Card
 import com.zorbeytorunoglu.tabuuplus.domain.model.Lang
 import com.zorbeytorunoglu.tabuuplus.domain.model.LangCards
 import org.json.JSONObject
 
-class CardsRespondParser(jsonResponse: String) {
+class CardsJsonParser(jsonResponse: String) {
 
     private val fullJson = JSONObject(jsonResponse)
 
-    fun parse(): List<LangCards> {
-        return listOfNotNull(
-            getCardMapFromLangKey(fullJson, "en"),
-            getCardMapFromLangKey(fullJson, "fr"),
-            getCardMapFromLangKey(fullJson, "tr")
-        )
+    private fun getVersion(): Int {
+        return fullJson.getInt("version")
     }
+
+    fun parse(): ParsedCardsJson = ParsedCardsJson(getVersion(), listOfNotNull(
+        getCardMapFromLangKey(fullJson, "en"),
+        getCardMapFromLangKey(fullJson, "fr"),
+        getCardMapFromLangKey(fullJson, "tr")
+    ))
 
     private fun getCardMapFromLangKey(fullJson: JSONObject, keyString: String): LangCards? {
 

@@ -18,7 +18,7 @@ class CardRepositoryImpl @Inject constructor(
     override val langCardsState: StateFlow<State<List<LangCards>>>
         get() = _langCardsState
 
-    override suspend fun getCards(): Response<ResponseBody> = api.getCards()
+    override suspend fun getRemoteCards(): Response<ResponseBody> = api.getCards()
 
     override fun updateCardsState(state: State<List<LangCards>>) {
         _langCardsState.value = state

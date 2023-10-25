@@ -1,5 +1,5 @@
 
-package com.zorbeytorunoglu.tabuuplus.presentation.activity
+package com.zorbeytorunoglu.tabuuplus.presentation.ui.activity
 
 import android.os.Build
 import android.os.Bundle

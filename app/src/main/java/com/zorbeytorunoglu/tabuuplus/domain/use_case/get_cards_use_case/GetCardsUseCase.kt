@@ -2,7 +2,7 @@ package com.zorbeytorunoglu.tabuuplus.domain.use_case.get_cards_use_case
 
 import com.zorbeytorunoglu.tabuuplus.common.Result
 import com.zorbeytorunoglu.tabuuplus.common.State
-import com.zorbeytorunoglu.tabuuplus.data.remote.CardsRespondParser
+import com.zorbeytorunoglu.tabuuplus.data.CardsJsonParser
 import com.zorbeytorunoglu.tabuuplus.domain.model.LangCards
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +27,7 @@ class GetCardsUseCase @Inject constructor(
                 if (!response.isSuccessful || response.body() == null) {
                     emit(Result.Error<List<LangCards>>("Response was not successful."))
                 } else {
-                    val parser = CardsRespondParser(response.body()!!.string())
+                    val parser = CardsJsonParser(response.body()!!.string())
                     val data = parser.parse()
                     if (data.isEmpty())
                         emit(Result.Error<List<LangCards>>("Parsed data is empty."))

@@ -9,4 +9,5 @@
     <color name="passButtonColor">#2962FF</color>
     <color name="countdownBackgroundColor">#E1FFEB3B</color>
     <color name="pauseBackgroundColor">#FF03DAC5</color>
+    <color name="gray">#757575</color>
 </resources>

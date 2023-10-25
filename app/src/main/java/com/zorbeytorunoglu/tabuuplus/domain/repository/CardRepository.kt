@@ -10,7 +10,7 @@ interface CardRepository {
 
     val langCardsState: StateFlow<State<List<LangCards>>>
 
-    suspend fun getCards(): Response<ResponseBody>
+    suspend fun getRemoteCards(): Response<ResponseBody>
 
     fun updateCardsState(state: State<List<LangCards>>)
 

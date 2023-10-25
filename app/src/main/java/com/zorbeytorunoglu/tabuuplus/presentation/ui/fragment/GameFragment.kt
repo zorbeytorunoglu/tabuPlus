@@ -1,4 +1,4 @@
-package com.zorbeytorunoglu.tabuuplus.presentation.fragment
+package com.zorbeytorunoglu.tabuuplus.presentation.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
