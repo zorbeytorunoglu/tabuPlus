@@ -52,7 +52,6 @@ class MainFragment: Fragment(), OnTeamNamesSelectedListener {
     }
 
     override fun onTeamNamesSelected(teamAName: String, teamBName: String) {
-        Log.e("Tabu", "tetik $teamAName , $teamBName")
         Navigation.findNavController(requireView()).navigate(
             MainFragmentDirections.actionMainFragmentToGameFragment(teamAName, teamBName)
         )
