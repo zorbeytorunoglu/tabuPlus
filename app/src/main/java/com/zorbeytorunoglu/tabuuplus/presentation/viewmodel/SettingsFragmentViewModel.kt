@@ -125,8 +125,6 @@ class SettingsFragmentViewModel @Inject constructor(
             GameSettings(timeLimit, passLimit, falsePenalty, winningPoint)
         )
 
-        Log.e("Tabu", "${gameRepository.gameSettings.data!!.timeLimit}")
-
         return true
 
     }
