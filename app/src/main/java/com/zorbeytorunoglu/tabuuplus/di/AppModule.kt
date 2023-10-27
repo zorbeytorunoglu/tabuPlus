@@ -3,7 +3,9 @@ package com.zorbeytorunoglu.tabuuplus.di
 import com.zorbeytorunoglu.tabuuplus.common.Constants
 import com.zorbeytorunoglu.tabuuplus.data.remote.TabuApi
 import com.zorbeytorunoglu.tabuuplus.data.repository.CardRepositoryImpl
+import com.zorbeytorunoglu.tabuuplus.data.repository.GameRepositoryImpl
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
+import com.zorbeytorunoglu.tabuuplus.domain.repository.GameRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,5 +31,9 @@ class AppModule {
             .build()
             .create(TabuApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideGameRepository(): GameRepository = GameRepositoryImpl()
 
 }

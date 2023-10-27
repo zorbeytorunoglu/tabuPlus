@@ -1,7 +1,7 @@
 package com.zorbeytorunoglu.tabuuplus.data
 
 import android.util.Log
-import com.zorbeytorunoglu.tabuuplus.data.dto.ParsedCardsJson
+import com.zorbeytorunoglu.tabuuplus.data.dto.CardsData
 import com.zorbeytorunoglu.tabuuplus.domain.model.Card
 import com.zorbeytorunoglu.tabuuplus.domain.model.Lang
 import com.zorbeytorunoglu.tabuuplus.domain.model.LangCards
@@ -15,7 +15,7 @@ class CardsJsonParser(jsonResponse: String) {
         return fullJson.getInt("version")
     }
 
-    fun parse(): ParsedCardsJson = ParsedCardsJson(getVersion(), listOfNotNull(
+    fun parse(): CardsData = CardsData(getVersion(), listOfNotNull(
         getCardMapFromLangKey(fullJson, "en"),
         getCardMapFromLangKey(fullJson, "fr"),
         getCardMapFromLangKey(fullJson, "tr")
