@@ -10,10 +10,6 @@ class GameFragmentViewModel @Inject constructor(
     private val getCardsFlowUseCase: GetCardsFlowUseCase
 ): ViewModel() {
 
-    fun getCards() {
 
-
-
-    }
 
 }

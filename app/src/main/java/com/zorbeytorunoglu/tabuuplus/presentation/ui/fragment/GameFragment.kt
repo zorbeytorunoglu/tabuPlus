@@ -24,8 +24,6 @@ class GameFragment : Fragment() {
 
         binding = FragmentGameBinding.inflate(inflater, container, false)
 
-        viewModel.getCards()
-
         return binding.root
 
     }

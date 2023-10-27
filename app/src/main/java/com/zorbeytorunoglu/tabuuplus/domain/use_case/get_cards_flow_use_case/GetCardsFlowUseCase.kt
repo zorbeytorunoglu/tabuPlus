@@ -18,29 +18,27 @@ class GetCardsFlowUseCase @Inject constructor(
 
     operator fun invoke(scope: CoroutineScope, context: Context, saveLocal: Boolean) = flow {
 
-            try {
-                emit(Result.Loading())
-                val response = repository.getRemoteCards()
-                if (!response.isSuccessful || response.body() == null) {
-                    emit(Result.Error("Response was not successful."))
+        try {
+            emit(Result.Loading())
+            val response = repository.getRemoteCards()
+            if (!response.isSuccessful || response.body() == null) {
+                emit(Result.Error("Response was not successful."))
+            } else {
+                val json = response.body()!!.string()
+                val parser = CardsJsonParser(json)
+                val data = parser.parse()
+                if (data.langCardsList.isNullOrEmpty()) {
+                    emit(Result.Error("Parsed data's card list is empty."))
                 } else {
-                    val json = response.body()!!.string()
-                    val parser = CardsJsonParser(json)
-                    val data = parser.parse()
-                    if (data.langCardsList.isNullOrEmpty()) {
-                        emit(Result.Error("Parsed data's card list is empty."))
-                    } else {
-                        emit(Result.Success(data.langCardsList))
-                        if (saveLocal)
-                            saveCardsUseCase(scope, context, json)
-                    }
+                    emit(Result.Success(data))
+                    if (saveLocal)
+                        saveCardsUseCase(scope, context, json)
                 }
-            } catch (e: HttpException) {
-                emit(Result.Error(e.localizedMessage ?: "An unexpected error occurred."))
-            } catch (e: IOException) {
-                emit(Result.Error("Couldn't reach web service. Check your internet connection."))
             }
-
+        } catch (e: HttpException) {
+            emit(Result.Error(e.localizedMessage ?: "An unexpected error occurred."))
+        } catch (e: IOException) {
+            emit(Result.Error("Couldn't reach web service. Check your internet connection."))
         }
-
     }
+}

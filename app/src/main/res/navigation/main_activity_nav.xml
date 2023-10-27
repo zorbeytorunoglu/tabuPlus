@@ -8,7 +8,14 @@
         android:id="@+id/gameFragment"
         android:name="com.zorbeytorunoglu.tabuuplus.presentation.ui.fragment.GameFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_game" >
+        <argument
+            android:name="teamAName"
+            app:argType="string" />
+        <argument
+            android:name="teamBName"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.zorbeytorunoglu.tabuuplus.presentation.ui.fragment.SplashFragment"
