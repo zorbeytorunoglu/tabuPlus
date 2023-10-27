@@ -54,7 +54,7 @@ class SettingsFragmentViewModel @Inject constructor(
                 }
                 is Result.Success -> {
                     loadingDialog?.dismiss()
-                    cardRepository.updateCardsState(State(false, result.data!!))
+                    cardRepository.updateCardsState(State(false, result.data!!.langCardsList))
                     if (updateData)
                         _notificationMsgLiveData.postValue("Latest cards are downloaded!")
                 }
