@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.zorbeytorunoglu.tabuuplus.R
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentSettingsBinding
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.LoadingDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.SettingsFragmentViewModel
@@ -45,9 +47,13 @@ class SettingsFragment: Fragment() {
             viewModel.updateCards(requireContext(), true, LoadingDialog(requireContext(), layoutInflater), true)
         }
 
+        val cardLanguageOptionArray = arrayOf("English", "French", "Turkish")
+
+        binding.langAutoComplete.setAdapter(ArrayAdapter(requireContext(), R.layout.lang_selection_dropdown_item, cardLanguageOptionArray))
+
         binding.saveButton.setOnClickListener {
 
-            val op = viewModel.validateNSaveForm(
+            val validForm = viewModel.validateNSaveForm(
                 binding.timeLimitEditText,
                 binding.timeLimitTextInputLayout,
                 binding.maxPassEditText,
@@ -55,10 +61,12 @@ class SettingsFragment: Fragment() {
                 binding.falsePenaltyEditText,
                 binding.falsePenaltyLayout,
                 binding.winningPointEditText,
-                binding.winningPointLayout
+                binding.winningPointLayout,
+                binding.langAutoComplete,
+                binding.langAutoCompleteLayout
             )
 
-            if (op)
+            if (validForm)
                 Navigation.findNavController(it).navigate(
                     SettingsFragmentDirections.actionSettingsFragmentToMainFragment()
                 )
