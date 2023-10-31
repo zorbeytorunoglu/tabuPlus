@@ -3,6 +3,7 @@ package com.zorbeytorunoglu.tabuuplus.presentation.viewmodel
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.zorbeytorunoglu.tabuuplus.common.Result
 import com.zorbeytorunoglu.tabuuplus.common.State
 import com.zorbeytorunoglu.tabuuplus.domain.model.GameSettings
+import com.zorbeytorunoglu.tabuuplus.domain.model.Lang
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
 import com.zorbeytorunoglu.tabuuplus.domain.repository.GameRepository
 import com.zorbeytorunoglu.tabuuplus.domain.use_case.get_cards_flow_use_case.GetCardsFlowUseCase
@@ -77,7 +79,9 @@ class SettingsFragmentViewModel @Inject constructor(
         falsePenaltyET: EditText,
         falsePenaltyLayout: TextInputLayout,
         winningPointET: EditText,
-        winningPointLayout: TextInputLayout
+        winningPointLayout: TextInputLayout,
+        langAutoComplete: AutoCompleteTextView,
+        langAutoCompleteLayout: TextInputLayout
     ): Boolean {
 
         var valid = true
@@ -89,7 +93,10 @@ class SettingsFragmentViewModel @Inject constructor(
 
         if (timeLimit > 240 || timeLimit < 20) {
             timeLimitLayout.error = "Time limit must be between 20 and 240"
+            return false
         }
+
+        timeLimitLayout.error = null
 
         val passLimit = kotlin.runCatching { passLimitET.text.toString().toInt() }.getOrNull() ?: kotlin.run {
             passLimitLayout.error = "Not valid pass limit."
@@ -101,6 +108,8 @@ class SettingsFragmentViewModel @Inject constructor(
             return false
         }
 
+        passLimitLayout.error = null
+
         val falsePenalty = kotlin.runCatching { falsePenaltyET.text.toString().toInt() }.getOrNull() ?: kotlin.run {
             falsePenaltyLayout.error = "Not valid false penalty point."
             return false
@@ -110,6 +119,8 @@ class SettingsFragmentViewModel @Inject constructor(
             falsePenaltyLayout.error = "Must be between 0 and 200."
             return false
         }
+
+        falsePenaltyLayout.error = null
 
         val winningPoint = kotlin.runCatching { winningPointET.text.toString().toInt() }.getOrNull() ?: kotlin.run {
             winningPointLayout.error = "Not valid winning point."
@@ -121,8 +132,24 @@ class SettingsFragmentViewModel @Inject constructor(
             return false
         }
 
+        winningPointLayout.error = null
+
+        val langString = kotlin.runCatching { langAutoComplete.text.toString() }.getOrNull() ?: kotlin.run {
+            langAutoCompleteLayout.error = "Can't be left empty."
+            return false
+        }
+
+        langAutoCompleteLayout.error = null
+
+        val lang = when (langString) {
+            "English" -> Lang.EN
+            "French" -> Lang.FR
+            "Turkish" -> Lang.TR
+            else -> Lang.EN
+        }
+
         gameRepository.gameSettings.updateData(
-            GameSettings(timeLimit, passLimit, falsePenalty, winningPoint)
+            GameSettings(lang, timeLimit, passLimit, falsePenalty, winningPoint)
         )
 
         return true
