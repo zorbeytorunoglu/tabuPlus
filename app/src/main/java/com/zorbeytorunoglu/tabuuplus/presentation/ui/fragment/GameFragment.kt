@@ -37,18 +37,20 @@ class GameFragment : Fragment() {
         }
 
         binding.pauseCardView.setOnClickListener {
-
             if (viewModel.countdownManager.isPaused())
                 viewModel.countdownManager.resume()
             else
                 viewModel.countdownManager.pause()
-
         }
 
         lifecycleScope.launch {
             viewModel.countdownManager.remainingTimeFlow.collectLatest {
                 binding.countdownTextView.text = it.toString()
             }
+        }
+
+        binding.correctButton.setOnClickListener {
+            
         }
 
         viewModel.countdownManager.start()
