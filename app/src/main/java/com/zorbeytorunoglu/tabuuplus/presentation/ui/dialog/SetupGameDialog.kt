@@ -36,6 +36,12 @@ class SetupGameDialog(context: Context) {
                 binding.teamBNameET.text.toString()
             }.getOrNull() ?: "Team B"
 
+            if (teamAVal.equals(teamBVal, true)) {
+                binding.teamANameLayout.error = "Can't be same name."
+                binding.teamBNameLayout.error = "Can't be same name."
+                return@setOnClickListener
+            }
+
             if (teamAVal.length > 30) {
                 teamAVal.substring(0, 30)
             }
