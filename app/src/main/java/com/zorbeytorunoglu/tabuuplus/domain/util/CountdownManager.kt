@@ -10,8 +10,9 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 class CountdownManager(
-    initialTime: Int,
-    private val scope: CoroutineScope
+    private val initialTime: Int,
+    private val scope: CoroutineScope,
+    private var onFinish: (() -> Unit)? = null
 ) {
 
     private val _remainingTimeFlow = MutableStateFlow(initialTime)
@@ -21,9 +22,8 @@ class CountdownManager(
 
     private var countdownJob: Job? = null
 
-    private var onFinish: (() -> Unit)? = null
-
     fun start() {
+        _remainingTimeFlow.value = initialTime
         countdownJob = scope.launch {
             while (_remainingTimeFlow.value >= 0) {
                 if (!isPaused.get()) {
@@ -47,13 +47,12 @@ class CountdownManager(
 
     fun resume() {
         isPaused.set(false)
-        Log.e("Tabu", "Baslattim")
     }
 
     fun stop() = countdownJob?.cancel()
 
     fun setOnFinish(unit: () -> Unit) {
-        this.onFinish = unit
+        onFinish = unit
     }
 
 }

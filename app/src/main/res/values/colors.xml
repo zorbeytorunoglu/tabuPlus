@@ -10,4 +10,7 @@
     <color name="countdownBackgroundColor">#E1FFEB3B</color>
     <color name="pauseBackgroundColor">#FF03DAC5</color>
     <color name="gray">#757575</color>
+    <color name="teamAColor">#E21DAEC8</color>
+    <color name="teamBColor">#E2C81D37</color>
+    <color name="whitishBackground">#E2FFFFFF</color>
 </resources>

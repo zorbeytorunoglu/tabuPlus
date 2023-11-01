@@ -1,5 +1,7 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.viewmodel
 
+import android.app.Dialog
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,17 +9,19 @@ import androidx.lifecycle.viewModelScope
 import com.zorbeytorunoglu.tabuuplus.domain.model.Card
 import com.zorbeytorunoglu.tabuuplus.domain.model.GameData
 import com.zorbeytorunoglu.tabuuplus.domain.model.TeamData
+import com.zorbeytorunoglu.tabuuplus.domain.model.TurnData
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
 import com.zorbeytorunoglu.tabuuplus.domain.repository.GameRepository
 import com.zorbeytorunoglu.tabuuplus.domain.util.CountdownManager
 import com.zorbeytorunoglu.tabuuplus.domain.util.GameCardManager
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.TurnEndDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class GameFragmentViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val cardRepository: CardRepository
+    cardRepository: CardRepository
 ): ViewModel() {
 
     private val _currentCardLiveData = MutableLiveData<Card>()
@@ -32,11 +36,18 @@ class GameFragmentViewModel @Inject constructor(
     val passCountLiveData = _passCountLiveData
 
     val countdownManager: CountdownManager = CountdownManager(
-        gameRepository.gameSettings.data?.timeLimit ?: 10,
+        gameRepository.gameSettings.data?.timeLimit ?: 30,
         viewModelScope
-    )
+    ) {
+        onTurnEnd()
+    }
 
-    val gameCardManager = GameCardManager(gameRepository, cardRepository)
+    private val turnData = TurnData(0, 0)
+
+    private lateinit var teamA: TeamData
+    private lateinit var teamB: TeamData
+
+    private val gameCardManager = GameCardManager(gameRepository, cardRepository)
 
     init {
         gameCardManager.loadCards()
@@ -52,8 +63,12 @@ class GameFragmentViewModel @Inject constructor(
         postNewCard()
     }
 
-    fun onTourEnd() {
-
+    fun onTurnEnd() {
+        switchTeamTurn()
+        resetTurnData()
+        resetPassCount()
+        postNewCard()
+        countdownManager.start()
     }
 
     fun onPass(): Boolean {
@@ -66,32 +81,53 @@ class GameFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun increaseCorrectPoint() {
-        increaseNPostTeamScoresBy(1, 0)
-    }
-
-    private fun increaseFalsePoint() {
-        increaseNPostTeamScoresBy(0, 1)
+    fun startGame() {
+        postNewCard()
+        countdownManager.start()
+        _currentTeamLiveData.postValue(teamA)
     }
 
     private fun postNewCard() {
         _currentCardLiveData.postValue(gameCardManager.pick())
     }
 
-    private fun increaseNPostTeamScoresBy(correctPoint: Int, falsePoint: Int) {
-        val currentData = _currentTeamLiveData.value!!
-        _currentTeamLiveData.postValue(TeamData(
-            currentData.name,
-            currentData.correctScore+correctPoint,
-            currentData.falseScore+falsePoint
-        ))
+    fun setTeams(teamAName: String, teamBName: String) {
+        teamA = TeamData(teamAName)
+        teamB = TeamData(teamBName)
     }
 
-    fun newGame(teamAName: String, teamBName: String) {
-        gameRepository.gameData.updateData(
-            GameData(TeamData(teamAName), TeamData(teamBName),
-                gameRepository.gameSettings.data?.passLimit ?: 3)
-        )
+    fun getTurnEndDialog(context: Context): Dialog {
+        return TurnEndDialog(context, teamA, teamB, turnData)
+    }
+
+    private fun switchTeamTurn() {
+        val currentTeam = if (_currentTeamLiveData.value!! == teamA) teamB else teamA
+        _currentTeamLiveData.postValue(currentTeam)
+    }
+
+    private fun resetPassCount() {
+        _passCountLiveData.postValue(gameRepository.gameSettings.data?.passLimit ?: 3)
+    }
+
+    private fun resetTurnData() {
+        turnData.correctPoint = 0
+        turnData.falsePoint = 0
+    }
+
+    private fun getCurrentTeam(): TeamData {
+        return _currentTeamLiveData.value!!
+    }
+
+    private fun increaseCorrectPoint() {
+        getCurrentTeam().correctScore++
+        _currentTeamLiveData.postValue(getCurrentTeam())
+        turnData.correctPoint++
+    }
+
+    private fun increaseFalsePoint() {
+        getCurrentTeam().falseScore++
+        _currentTeamLiveData.postValue(getCurrentTeam())
+        turnData.falsePoint++
     }
 
 }

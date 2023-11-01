@@ -14,49 +14,28 @@ interface OnTeamNamesSelectedListener {
 
 class SetupGameDialog(context: Context) {
 
-    private val dialog: Dialog = Dialog(context)
-    private val binding: SetupGameDialogBinding
-
+    private val dialog = Dialog(context)
+    private val binding = SetupGameDialogBinding.inflate(LayoutInflater.from(context))
     private var listener: OnTeamNamesSelectedListener? = null
 
     init {
-
-        binding = SetupGameDialogBinding.inflate(LayoutInflater.from(context))
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
 
         binding.startButton.setOnClickListener {
-
-            val teamAVal = kotlin.runCatching {
-                binding.teamANameET.text.toString()
-            }.getOrNull() ?: "Team A"
-
-            val teamBVal = kotlin.runCatching {
-                binding.teamBNameET.text.toString()
-            }.getOrNull() ?: "Team B"
+            val teamAVal = binding.teamANameET.text?.takeIf { it.isNotBlank() }?.toString() ?: "Team A"
+            val teamBVal = binding.teamBNameET.text?.takeIf { it.isNotBlank() }?.toString() ?: "Team B"
 
             if (teamAVal.equals(teamBVal, true)) {
-                binding.teamANameLayout.error = "Can't be same name."
-                binding.teamBNameLayout.error = "Can't be same name."
-                return@setOnClickListener
+                binding.teamANameLayout.error = "Can't have the same name."
+                binding.teamBNameLayout.error = "Can't have the same name."
+            } else {
+                listener?.onTeamNamesSelected(teamAVal.take(30), teamBVal.take(30))
+                dialog.dismiss()
             }
-
-            if (teamAVal.length > 30) {
-                teamAVal.substring(0, 30)
-            }
-
-            if (teamBVal.length > 30) {
-                teamBVal.substring(0, 30)
-            }
-
-            listener?.onTeamNamesSelected(teamAVal, teamBVal)
-            dialog.dismiss()
-
         }
 
         dialog.setContentView(binding.root)
-
     }
 
     fun show() = dialog.show()
