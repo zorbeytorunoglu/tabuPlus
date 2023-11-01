@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zorbeytorunoglu.tabuuplus.domain.model.Card
-import com.zorbeytorunoglu.tabuuplus.domain.model.GameData
 import com.zorbeytorunoglu.tabuuplus.domain.model.TeamData
 import com.zorbeytorunoglu.tabuuplus.domain.model.TurnData
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
@@ -17,6 +16,10 @@ import com.zorbeytorunoglu.tabuuplus.domain.util.GameCardManager
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.TurnEndDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+
+interface OnGameEndListener {
+    fun onGameEnd(winnerTeam: TeamData, teamA: TeamData, teamB: TeamData)
+}
 
 @HiltViewModel
 class GameFragmentViewModel @Inject constructor(
@@ -44,10 +47,12 @@ class GameFragmentViewModel @Inject constructor(
 
     private val turnData = TurnData(0, 0)
 
+    private val gameCardManager = GameCardManager(gameRepository, cardRepository)
+
     private lateinit var teamA: TeamData
     private lateinit var teamB: TeamData
 
-    private val gameCardManager = GameCardManager(gameRepository, cardRepository)
+    private var listener: OnGameEndListener? = null
 
     init {
         gameCardManager.loadCards()
@@ -81,6 +86,11 @@ class GameFragmentViewModel @Inject constructor(
         }
     }
 
+    fun onGameEnd() {
+        countdownManager.stop()
+        listener?.onGameEnd(getCurrentTeam(), teamA, teamB)
+    }
+
     fun startGame() {
         postNewCard()
         countdownManager.start()
@@ -98,6 +108,10 @@ class GameFragmentViewModel @Inject constructor(
 
     fun getTurnEndDialog(context: Context): Dialog {
         return TurnEndDialog(context, teamA, teamB, turnData)
+    }
+
+    fun setOnGameEndListener(listener: OnGameEndListener) {
+        this.listener = listener
     }
 
     private fun switchTeamTurn() {
@@ -122,6 +136,12 @@ class GameFragmentViewModel @Inject constructor(
         getCurrentTeam().correctScore++
         _currentTeamLiveData.postValue(getCurrentTeam())
         turnData.correctPoint++
+
+        if ((gameRepository.gameSettings.data?.winningPoint
+                ?: 25) == getCurrentTeam().correctScore - getCurrentTeam().falseScore
+        ) {
+            onGameEnd()
+        }
     }
 
     private fun increaseFalsePoint() {
