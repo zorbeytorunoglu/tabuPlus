@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentMainBinding
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.FirstHelpDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.OnTeamNamesSelectedListener
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SecondHelpDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SetupGameDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.MainFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +42,16 @@ class MainFragment: Fragment(), OnTeamNamesSelectedListener {
             Navigation.findNavController(it).navigate(
                 MainFragmentDirections.actionMainFragmentToSettingsFragment()
             )
+        }
+
+        val firstHelpDialog = FirstHelpDialog(requireContext())
+        val secondHelpDialog = SecondHelpDialog(requireContext())
+        firstHelpDialog.setOnDismissListener {
+            secondHelpDialog.show()
+        }
+
+        binding.helpButton.setOnClickListener {
+            firstHelpDialog.show()
         }
 
         viewModel.notificationMsgLiveData.observe(viewLifecycleOwner) {
