@@ -1,23 +1,25 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentGameBinding
-import com.zorbeytorunoglu.tabuuplus.domain.model.Card
+import com.zorbeytorunoglu.tabuuplus.domain.model.TeamData
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.PauseDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.GameFragmentViewModel
+import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.OnGameEndListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GameFragment : Fragment() {
+class GameFragment : Fragment(), OnGameEndListener {
 
     private lateinit var binding: FragmentGameBinding
     private val viewModel: GameFragmentViewModel by viewModels()
@@ -34,10 +36,17 @@ class GameFragment : Fragment() {
         viewModel.setTeams(bundle.teamAName, bundle.teamBName)
 
         binding.pauseCardView.setOnClickListener {
-            if (viewModel.countdownManager.isPaused())
+
+            val pauseDialog = PauseDialog(requireContext())
+
+            pauseDialog.setOnDismissListener {
                 viewModel.countdownManager.resume()
-            else
-                viewModel.countdownManager.pause()
+            }
+
+            viewModel.countdownManager.pause()
+
+            pauseDialog.show()
+
         }
 
         binding.correctButton.setOnClickListener {
@@ -85,10 +94,18 @@ class GameFragment : Fragment() {
             binding.scoreTextView.text = "Score: ${it.correctScore - it.falseScore}"
         }
 
+        viewModel.setOnGameEndListener(this)
+
         viewModel.startGame()
 
         return binding.root
 
+    }
+
+    override fun onGameEnd(winnerTeam: TeamData, teamA: TeamData, teamB: TeamData) {
+        Navigation.findNavController(requireView()).navigate(
+            GameFragmentDirections.actionGameFragmentToGameEndFragment(winnerTeam,teamA,teamB)
+        )
     }
 
 }
