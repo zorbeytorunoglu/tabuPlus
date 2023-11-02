@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_local_cards_unavailable">Le fichier de cartes local n\'existe pas et il n\'a pas été possible d\'accéder à la base de données à distance. Veuillez vérifier votre connexion Internet.</string>
+    <string name="label_score">Score: %1$d</string>
+    <string name="team_up_description">Faites de votre mieux pour avoir un nombre égal de personnes dans chaque équipe. Vous voulez également essayer de rendre les équipes équilibrées en ce qui concerne le niveau de compétence. N\'oubliez pas que chaque équipe doit avoir un membre de l\'autre équipe pour éviter la tricherie. Donc, positionnez-vous en conséquence.</string>
+    <string name="team_up_title">Former une équipe</string>
+    <string name="white_dialog_indicator">Indicateur de la fenêtre de dialogue que vous observez.</string>
+    <string name="app_s_logo">Logo de l\'application.</string>
+    <string name="main_word">Mot principal</string>
+    <string name="related_word">Mot lié</string>
+    <string name="pause_icon">Icône de pause.</string>
+    <string name="team_a">Équipe A</string>
+    <string name="score_0">Score: 0</string>
+    <string name="correct_button">Bouton Correct</string>
+    <string name="false_icon">Icône Faux</string>
+    <string name="pass_icon">Icône Passe</string>
+    <string name="winner">Gagnant</string>
+    <string name="game_summary">Résumé du jeu</string>
+    <string name="team_b">Équipe B</string>
+    <string name="continue_button_text">CONTINUER</string>
+    <string name="new_game_button_text">NOUVEAU JEU</string>
+    <string name="settings_button_text">RÉGLAGES</string>
+    <string name="help_button_text">AIDE</string>
+    <string name="settings">Réglages</string>
+    <string name="settings_time_limit_hint">Limite de temps (20 - 240)</string>
+    <string name="settings_pass_hint">Passe (0 - 6)</string>
+    <string name="settings_false_point_penalty_hint">Incorrect Pénalité</string>
+    <string name="settings_winning_point_hint">Point de victoire</string>
+    <string name="back_button">Bouton Retour</string>
+    <string name="save_button_text">ENREGISTRER</string>
+    <string name="download_latest_cards_button_text">Bouton Télécharger les dernières cartes</string>
+    <string name="settings_select_card_language_hint">Sélectionner la langue des cartes</string>
+    <string name="company_name">Nom de l\'entreprise</string>
+    <string name="start_playing_title">Commencer à jouer</string>
+    <string name="start_playing_description">\"Nommez vos équipes et commencez le jeu. Le donneur d\'indices de \'Équipe A\' doit décrire le mot sans dire aucun des mots avec un arrière-plan blanc sur la carte. Le donneur d\'indices changera à chaque tour dans chaque équipe. La première équipe à atteindre le \'Score de victoire\' gagne.</string>
+    <string name="gray_dialog_indicator">Indicateur de dialogue gris</string>
+    <string name="team_names">Noms des équipes participantes.</string>
+    <string name="start_button_text">COMMENCER</string>
+    <string name="turn_summary">Résumé du tour</string>
+    <string name="correct">Correct</string>
+    <string name="false_text">Faux</string>
+    <string name="points">Points</string>
+</resources>

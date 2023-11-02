@@ -27,6 +27,7 @@
         android:src="@drawable/golub_games"
         app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
         app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
-        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView" />
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
+        android:contentDescription="@string/company_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

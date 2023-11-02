@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Start Playing"
+            android:text="@string/start_playing_title"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -37,7 +37,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
-            android:text="Name your teams and start the game. The clue-giver of \'Team A\' must describe the word, without saying any of the words with white background on the card. Clue-giver will change every turn in each team. First team to reach the \'Win Score\' wins."
+            android:text="@string/start_playing_description"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -56,7 +56,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
-            app:srcCompat="@drawable/ic_filled_circle_white_24" />
+            app:srcCompat="@drawable/ic_filled_circle_white_24"
+            android:contentDescription="@string/white_dialog_indicator" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieAnimationView"
@@ -82,6 +83,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
-            app:srcCompat="@drawable/ic_filled_circle_gray_24" />
+            app:srcCompat="@drawable/ic_filled_circle_gray_24"
+            android:contentDescription="@string/gray_dialog_indicator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

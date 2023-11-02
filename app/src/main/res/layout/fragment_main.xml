@@ -25,7 +25,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/app_s_logo" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="0dp"
@@ -46,7 +47,7 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="NEW GAME"
+        android:text="@string/new_game_button_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/settingsButton"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
@@ -59,7 +60,7 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="SETTINGS"
+        android:text="@string/settings_button_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/helpButton"
         app:layout_constraintEnd_toEndOf="@+id/newGameButton"
@@ -72,7 +73,7 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="HELP"
+        android:text="@string/help_button_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/settingsButton"
