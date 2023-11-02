@@ -1,7 +1,6 @@
 package com.zorbeytorunoglu.tabuuplus.data.repository
 
 import com.zorbeytorunoglu.tabuuplus.common.State
-import com.zorbeytorunoglu.tabuuplus.data.dto.CardsData
 import com.zorbeytorunoglu.tabuuplus.data.remote.TabuApi
 import com.zorbeytorunoglu.tabuuplus.domain.model.LangCards
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository

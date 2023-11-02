@@ -1,6 +1,5 @@
 package com.zorbeytorunoglu.tabuuplus.domain.util
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

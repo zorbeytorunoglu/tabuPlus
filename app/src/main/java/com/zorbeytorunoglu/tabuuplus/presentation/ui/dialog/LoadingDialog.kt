@@ -1,6 +1,5 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater

@@ -1,7 +1,5 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.viewmodel
 
-import android.app.Dialog
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +11,6 @@ import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
 import com.zorbeytorunoglu.tabuuplus.domain.repository.GameRepository
 import com.zorbeytorunoglu.tabuuplus.domain.util.CountdownManager
 import com.zorbeytorunoglu.tabuuplus.domain.util.GameCardManager
-import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.TurnEndDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

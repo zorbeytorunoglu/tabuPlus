@@ -2,7 +2,6 @@ package com.zorbeytorunoglu.tabuuplus.presentation.viewmodel
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.Log
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.lifecycle.LiveData
@@ -19,11 +18,8 @@ import com.zorbeytorunoglu.tabuuplus.domain.repository.GameRepository
 import com.zorbeytorunoglu.tabuuplus.domain.use_case.get_cards_flow_use_case.GetCardsFlowUseCase
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.LoadingDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
 @HiltViewModel
