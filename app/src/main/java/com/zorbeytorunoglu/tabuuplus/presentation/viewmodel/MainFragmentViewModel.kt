@@ -1,18 +1,21 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.viewmodel
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zorbeytorunoglu.tabuuplus.R
 import com.zorbeytorunoglu.tabuuplus.common.Result
 import com.zorbeytorunoglu.tabuuplus.common.State
 import com.zorbeytorunoglu.tabuuplus.data.dto.CardsData
 import com.zorbeytorunoglu.tabuuplus.domain.repository.CardRepository
 import com.zorbeytorunoglu.tabuuplus.domain.use_case.get_cards_flow_use_case.GetCardsFlowUseCase
 import com.zorbeytorunoglu.tabuuplus.domain.use_case.get_local_cards_flow_use_case.GetLocalCardsFlowUseCase
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.FirstHelpDialog
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.OnTeamNamesSelectedListener
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SecondHelpDialog
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SetupGameDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -46,21 +49,34 @@ class MainFragmentViewModel @Inject constructor(
             val remoteResult = remoteFlow.first()
 
             if (remoteResult is Result.Success) {
-                Log.i("Tabu", "Remote cards are downloaded an will be used.")
                 cardRepository.updateCardsState(State(false, remoteResult.data!!.langCardsList))
             } else {
-                Log.i("Tabu", "Couldn't reach to remote database.")
                 if (localResult is Result.Success) {
-                    Log.i("Tabu", "Local file is found and will be used.")
                     cardRepository.updateCardsState(State(false, localResult.data!!.langCardsList))
                 } else {
-                    Log.i("Tabu", "Both remote and local data couldn't found.")
-                    _notificationMsgLiveData.postValue("Local cards file doesn't exist and couldn't reach to remote database. Check your internet connection.")
+                    _notificationMsgLiveData.postValue(
+                        context.getString(R.string.error_local_cards_unavailable)
+                    )
                 }
             }
 
         }
 
+    }
+
+    fun showSetupGameDialog(context: Context, listener: OnTeamNamesSelectedListener) {
+        val dialog = SetupGameDialog(context)
+        dialog.setListener(listener)
+        dialog.show()
+    }
+
+    fun showHelpDialog(context: Context) {
+        val firstHelpDialog = FirstHelpDialog(context)
+        val secondHelpDialog = SecondHelpDialog(context)
+        firstHelpDialog.setOnDismissListener {
+            secondHelpDialog.show()
+        }
+        firstHelpDialog.show()
     }
 
 }

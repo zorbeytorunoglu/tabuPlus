@@ -7,21 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.zorbeytorunoglu.tabuuplus.R
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentSettingsBinding
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.LoadingDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.SettingsFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment: Fragment() {
@@ -37,48 +29,51 @@ class SettingsFragment: Fragment() {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        binding.backButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(
-                SettingsFragmentDirections.actionSettingsFragmentToMainFragment()
-            )
-        }
+        setupClickListeners()
+        setupLangAutoComplete()
+        subscribeNotificationObserver()
 
-        binding.downloadButton.setOnClickListener {
-            viewModel.updateCards(requireContext(), true, LoadingDialog(requireContext(), layoutInflater), true)
-        }
+        return binding.root
+    }
 
-        val cardLanguageOptionArray = arrayOf("English", "French", "Turkish")
-
+    private fun setupLangAutoComplete() {
+        val cardLanguageOptionArray = resources.getStringArray(R.array.card_languages)
         binding.langAutoComplete.setAdapter(ArrayAdapter(requireContext(), R.layout.lang_selection_dropdown_item, cardLanguageOptionArray))
+    }
 
-        binding.saveButton.setOnClickListener {
+    private fun setupClickListeners() {
+        binding.backButton.setOnClickListener { navigateToMainFragment() }
+        binding.downloadButton.setOnClickListener { viewModel.updateCards(requireContext(), true, LoadingDialog(requireContext()), true) }
+        binding.saveButton.setOnClickListener { saveSettingsAndNavigate() }
+    }
 
-            val validForm = viewModel.validateNSaveForm(
-                binding.timeLimitEditText,
-                binding.timeLimitTextInputLayout,
-                binding.maxPassEditText,
-                binding.maxPassTextInputLayout,
-                binding.falsePenaltyEditText,
-                binding.falsePenaltyLayout,
-                binding.winningPointEditText,
-                binding.winningPointLayout,
-                binding.langAutoComplete,
-                binding.langAutoCompleteLayout
-            )
-
-            if (validForm)
-                Navigation.findNavController(it).navigate(
-                    SettingsFragmentDirections.actionSettingsFragmentToMainFragment()
-                )
-
-        }
-
+    private fun subscribeNotificationObserver() {
         viewModel.notificationMsgLiveData.observe(viewLifecycleOwner) { message ->
             Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
         }
+    }
 
-        return binding.root
+    private fun navigateToMainFragment() {
+        findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToMainFragment())
+    }
 
+    private fun saveSettingsAndNavigate() {
+        val validForm = viewModel.validateNSaveForm(
+            binding.timeLimitEditText,
+            binding.timeLimitTextInputLayout,
+            binding.maxPassEditText,
+            binding.maxPassTextInputLayout,
+            binding.falsePenaltyEditText,
+            binding.falsePenaltyLayout,
+            binding.winningPointEditText,
+            binding.winningPointLayout,
+            binding.langAutoComplete,
+            binding.langAutoCompleteLayout
+        )
+
+        if (validForm) {
+            navigateToMainFragment()
+        }
     }
 
 }

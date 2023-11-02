@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,9 +28,7 @@ class SplashFragment: Fragment() {
             override fun onAnimationStart(p0: Animator) {}
 
             override fun onAnimationEnd(p0: Animator) {
-                Navigation.findNavController(binding.root).navigate(
-                    SplashFragmentDirections.actionSplashFragmentToMainFragment()
-                )
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
             }
 
             override fun onAnimationCancel(p0: Animator) {}

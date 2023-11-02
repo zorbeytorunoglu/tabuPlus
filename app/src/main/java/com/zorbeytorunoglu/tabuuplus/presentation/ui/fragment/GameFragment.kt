@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.zorbeytorunoglu.tabuuplus.R
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentGameBinding
 import com.zorbeytorunoglu.tabuuplus.domain.model.TeamData
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.PauseDialog
+import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.TurnEndDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.GameFragmentViewModel
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.OnGameEndListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +25,7 @@ class GameFragment : Fragment(), OnGameEndListener {
 
     private lateinit var binding: FragmentGameBinding
     private val viewModel: GameFragmentViewModel by viewModels()
+    private val args: GameFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,22 +34,15 @@ class GameFragment : Fragment(), OnGameEndListener {
 
         binding = FragmentGameBinding.inflate(inflater, container, false)
 
-        val bundle: GameFragmentArgs by navArgs()
-
-        viewModel.setTeams(bundle.teamAName, bundle.teamBName)
+        viewModel.setTeams(args.teamAName, args.teamBName)
 
         binding.pauseCardView.setOnClickListener {
-
             val pauseDialog = PauseDialog(requireContext())
-
             pauseDialog.setOnDismissListener {
                 viewModel.countdownManager.resume()
             }
-
             viewModel.countdownManager.pause()
-
             pauseDialog.show()
-
         }
 
         binding.correctButton.setOnClickListener {
@@ -63,7 +59,7 @@ class GameFragment : Fragment(), OnGameEndListener {
 
         viewModel.countdownManager.setOnFinish {
             viewModel.countdownManager.stop()
-            val turnEndDialog = viewModel.getTurnEndDialog(requireContext())
+            val turnEndDialog = TurnEndDialog(requireContext(), viewModel.teamA, viewModel.teamB, viewModel.turnData)
             turnEndDialog.setOnDismissListener {
                 viewModel.onTurnEnd()
             }
@@ -77,7 +73,7 @@ class GameFragment : Fragment(), OnGameEndListener {
         }
 
         viewModel.passCountLiveData.observe(viewLifecycleOwner) {
-            binding.passCountTextView.text = "($it)"
+            binding.passCountTextView.text = getString(R.string.pass_count, it)
         }
 
         viewModel.cardLiveData.observe(viewLifecycleOwner) { card ->
@@ -91,7 +87,7 @@ class GameFragment : Fragment(), OnGameEndListener {
 
         viewModel.currentTeamLiveData.observe(viewLifecycleOwner) {
             binding.teamTextView.text = it.name
-            binding.scoreTextView.text = "Score: ${it.correctScore - it.falseScore}"
+            binding.scoreTextView.text = getString(R.string.label_score, it.correctScore - it.falseScore)
         }
 
         viewModel.setOnGameEndListener(this)

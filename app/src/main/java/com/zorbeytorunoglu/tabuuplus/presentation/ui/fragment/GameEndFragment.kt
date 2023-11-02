@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.zorbeytorunoglu.tabuuplus.R
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentGameEndBinding
@@ -13,6 +14,7 @@ import com.zorbeytorunoglu.tabuuplus.databinding.FragmentGameEndBinding
 class GameEndFragment : Fragment() {
 
     private lateinit var binding: FragmentGameEndBinding
+    private val args: GameEndFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,11 +23,9 @@ class GameEndFragment : Fragment() {
 
         binding = FragmentGameEndBinding.inflate(inflater, container, false)
 
-        val bundle: GameEndFragmentArgs by navArgs()
-
-        val winnerTeam = bundle.winnerTeam
-        val teamA = bundle.teamA
-        val teamB = bundle.teamB
+        val winnerTeam = args.winnerTeam
+        val teamA = args.teamA
+        val teamB = args.teamB
 
         binding.teamANameTV.text = teamA.name
         binding.teamBNameTV.text = teamB.name
@@ -36,7 +36,7 @@ class GameEndFragment : Fragment() {
         binding.winnerTeamTV.text = winnerTeam.name
 
         binding.continueButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(
+            findNavController().navigate(
                 GameEndFragmentDirections.actionGameEndFragmentToMainFragment()
             )
         }

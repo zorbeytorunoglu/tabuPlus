@@ -1,19 +1,15 @@
 package com.zorbeytorunoglu.tabuuplus.presentation.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.zorbeytorunoglu.tabuuplus.databinding.FragmentMainBinding
-import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.FirstHelpDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.OnTeamNamesSelectedListener
-import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SecondHelpDialog
-import com.zorbeytorunoglu.tabuuplus.presentation.ui.dialog.SetupGameDialog
 import com.zorbeytorunoglu.tabuuplus.presentation.viewmodel.MainFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,27 +27,17 @@ class MainFragment: Fragment(), OnTeamNamesSelectedListener {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
         binding.newGameButton.setOnClickListener {
-
-            val dialog = SetupGameDialog(requireContext())
-            dialog.setListener(this)
-            dialog.show()
-
+            viewModel.showSetupGameDialog(requireContext(),this)
         }
 
         binding.settingsButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(
+            findNavController().navigate(
                 MainFragmentDirections.actionMainFragmentToSettingsFragment()
             )
         }
 
-        val firstHelpDialog = FirstHelpDialog(requireContext())
-        val secondHelpDialog = SecondHelpDialog(requireContext())
-        firstHelpDialog.setOnDismissListener {
-            secondHelpDialog.show()
-        }
-
         binding.helpButton.setOnClickListener {
-            firstHelpDialog.show()
+            viewModel.showHelpDialog(requireContext())
         }
 
         viewModel.notificationMsgLiveData.observe(viewLifecycleOwner) {
@@ -64,7 +50,7 @@ class MainFragment: Fragment(), OnTeamNamesSelectedListener {
     }
 
     override fun onTeamNamesSelected(teamAName: String, teamBName: String) {
-        Navigation.findNavController(requireView()).navigate(
+        findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToGameFragment(teamAName, teamBName)
         )
     }

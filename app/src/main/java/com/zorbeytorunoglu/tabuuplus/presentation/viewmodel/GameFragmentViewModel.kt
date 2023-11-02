@@ -45,12 +45,12 @@ class GameFragmentViewModel @Inject constructor(
         onTurnEnd()
     }
 
-    private val turnData = TurnData(0, 0)
+    val turnData = TurnData(0, 0)
 
     private val gameCardManager = GameCardManager(gameRepository, cardRepository)
 
-    private lateinit var teamA: TeamData
-    private lateinit var teamB: TeamData
+    lateinit var teamA: TeamData
+    lateinit var teamB: TeamData
 
     private var listener: OnGameEndListener? = null
 
@@ -106,10 +106,6 @@ class GameFragmentViewModel @Inject constructor(
         teamB = TeamData(teamBName)
     }
 
-    fun getTurnEndDialog(context: Context): Dialog {
-        return TurnEndDialog(context, teamA, teamB, turnData)
-    }
-
     fun setOnGameEndListener(listener: OnGameEndListener) {
         this.listener = listener
     }
@@ -138,16 +134,17 @@ class GameFragmentViewModel @Inject constructor(
         turnData.correctPoint++
 
         if ((gameRepository.gameSettings.data?.winningPoint
-                ?: 25) == getCurrentTeam().correctScore - getCurrentTeam().falseScore
+                ?: 50) == getCurrentTeam().correctScore - getCurrentTeam().falseScore
         ) {
             onGameEnd()
         }
     }
 
     private fun increaseFalsePoint() {
-        getCurrentTeam().falseScore++
+        val falsePenalty = gameRepository.gameSettings.data?.falsePointPenalty ?: 1
+        getCurrentTeam().falseScore += falsePenalty
         _currentTeamLiveData.postValue(getCurrentTeam())
-        turnData.falsePoint++
+        turnData.falsePoint += falsePenalty
     }
 
 }

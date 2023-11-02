@@ -1,0 +1,7 @@
+<resources>
+    <array name="card_languages">
+        <item>English</item>
+        <item>French</item>
+        <item>Turkish</item>
+    </array>
+</resources>
