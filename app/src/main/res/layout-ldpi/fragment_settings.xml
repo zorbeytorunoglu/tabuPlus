@@ -11,10 +11,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/settings"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +24,9 @@
         android:id="@+id/timeLimitTextInputLayout"
         style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/settings_time_limit_hint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +46,8 @@
         android:id="@+id/maxPassTextInputLayout"
         style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/settings_pass_hint"
         app:layout_constraintEnd_toEndOf="@+id/timeLimitTextInputLayout"
         app:layout_constraintStart_toStartOf="@+id/timeLimitTextInputLayout"
@@ -67,8 +67,8 @@
         android:id="@+id/falsePenaltyLayout"
         style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/settings_false_point_penalty_hint"
         app:layout_constraintEnd_toEndOf="@+id/maxPassTextInputLayout"
         app:layout_constraintStart_toStartOf="@+id/maxPassTextInputLayout"
@@ -88,8 +88,8 @@
         android:id="@+id/winningPointLayout"
         style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/settings_winning_point_hint"
         app:layout_constraintEnd_toEndOf="@+id/falsePenaltyLayout"
         app:layout_constraintStart_toStartOf="@+id/falsePenaltyLayout"
@@ -106,8 +106,8 @@
 
     <ImageView
         android:id="@+id/backButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="32dp"
         android:contentDescription="@string/back_button"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -120,7 +120,7 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/save_button_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -130,8 +130,8 @@
 
     <ImageView
         android:id="@+id/downloadButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginEnd="32dp"
         android:contentDescription="@string/download_latest_cards_button_text"
         android:src="@drawable/baseline_cloud_download_24"
@@ -143,23 +143,23 @@
         android:id="@+id/langAutoCompleteLayout"
         style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@color/white"
         android:hint="@string/settings_select_card_language_hint"
-        app:startIconDrawable="@drawable/baseline_language_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/winningPointLayout">
+        app:layout_constraintTop_toBottomOf="@+id/winningPointLayout"
+        app:startIconDrawable="@drawable/baseline_language_24">
 
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/langAutoComplete"
-            android:inputType="none"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:inputType="none" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
